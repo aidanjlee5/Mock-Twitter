@@ -18,6 +18,18 @@ export default async function Home() {
     redirect("/login");
   }
 
+  // Fetch the logged-in user's profile
+  const { data: profile, error: profileError } = await supabase
+    .from("profiles")
+    .select("username")
+    .eq("id", session.user.id)
+    .single();
+
+  if (profileError) {
+    console.error("Error fetching profile:", profileError);
+    redirect("/login");
+  }
+
   const { data: tweetData } = await supabase
     .from("tweets")
     .select("*, author: profiles(*), likes(*)");
@@ -32,28 +44,25 @@ export default async function Home() {
       likes: tweet.likes.length,
     })) ?? [];
 
-  const ProfileButton = ({ authorId }: { authorId: string }) => (
-    <Link href={`/profile/${authorId}`}>
-      <a className={styles.profileButton}>View Profile</a>
-    </Link>
-  );
-
   return (
     <div className="w-full max-w-xl mx-auto content-stretch">
       <div className="flex justify-between px-4 py-6">
         <h1 className="text-5xl">Twitter</h1>
-        <AuthButtonServer />
+        <div className="mt-2 space-x-4">
+          <a href={`/profile/${profile?.username}`}>
+            Profile
+          </a>
+          <AuthButtonServer />
+        </div>
       </div>
 
       <div className="p-10">
-        <NewTweet/>
+        <NewTweet />
       </div>
 
       <div className="p-10">
         <Tweets tweets={tweets} />
       </div>
-      
-      
     </div>
   );
 }
