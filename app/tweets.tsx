@@ -4,8 +4,6 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import Likes from "./likes";
 import { useEffect, useOptimistic } from "react";
 import { useRouter } from "next/navigation";
-import Link from "next/link"; // Import Link component from Next.js
-import styles from "./style.module.css"; // Import the styles for the profile button
 
 export default function Tweets({ tweets }: { tweets: TweetWithAuthor[] }) {
   const [optimisticTweets, addOptimisticTweet] = useOptimistic<
@@ -47,35 +45,22 @@ export default function Tweets({ tweets }: { tweets: TweetWithAuthor[] }) {
     };
   }, [supabase, router]);
 
-  const handleProfileClick = (username: string) => {
-    router.push(`/profile/${username}`);
-  };
-
   return reversedOptimisticTweets.map((tweet) => (
     <div key={tweet.id} className="px-4 py-8 flex">
-      <span className="cursor-pointer" onClick={() => handleProfileClick(tweet.author.username)}>  
-        <div className="h-12 w-12 rounded-full bg-white mr-5"></div>
-      </span>
+      <div className="h-12 w-12 rounded-full bg-white mr-5"></div>
       <div>
-        <p>
-          <span
-            className="font-bold mr-2 cursor-pointer"
-            onClick={() => handleProfileClick(tweet.author.username)}
-          >
-            {tweet.author.name}
-          </span>
-          <span
-            className="text-xs cursor-pointer"
-            onClick={() => handleProfileClick(tweet.author.username)}
-          >
-            {tweet.author.username}
-          </span>
-        </p>
-        <p>{tweet.title}</p>
-        <span className="text-xs">
-          <Likes tweet={tweet} addOptimisticTweet={addOptimisticTweet} />
+      <p>
+        <span className="font-bold mr-2">
+        {tweet.author.name} 
         </span>
-      </div>
+        
+        <span className="text-xs">{tweet.author.username}</span>
+        
+      </p>
+      <p>{tweet.title}</p>
+      <span className="text-xs"><Likes tweet={tweet} addOptimisticTweet={addOptimisticTweet} /></span>
+      
+    </div>
     </div>
   ));
 }
