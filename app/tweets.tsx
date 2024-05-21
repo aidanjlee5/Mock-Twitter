@@ -18,6 +18,7 @@ export default function Tweets({ tweets }: { tweets: TweetWithAuthor[] }) {
     return newOptimisticTweets;
   });
 
+  
   // Reverse the order of tweets so that new tweets appear at the top
   const reversedOptimisticTweets = [...optimisticTweets].reverse();
 
@@ -45,16 +46,30 @@ export default function Tweets({ tweets }: { tweets: TweetWithAuthor[] }) {
     };
   }, [supabase, router]);
 
+  const handleProfileClick = (username: string) => {
+    router.push(`/profile/${username}`);
+  };
+
   return reversedOptimisticTweets.map((tweet) => (
     <div key={tweet.id} className="px-4 py-8 flex">
-      <div className="h-12 w-12 rounded-full bg-white mr-5"></div>
+      <span className="cursor-pointer" onClick={() => handleProfileClick(tweet.author.username)}>  
+        <div className="h-12 w-12 rounded-full bg-white mr-5"></div>
+      </span>
       <div>
       <p>
-        <span className="font-bold mr-2">
-        {tweet.author.name} 
-        </span>
+      <span
+            className="font-bold mr-2 cursor-pointer"
+            onClick={() => handleProfileClick(tweet.author.username)}
+          >
+            {tweet.author.name}
+          </span>
         
-        <span className="text-xs">{tweet.author.username}</span>
+          <span
+            className="text-xs cursor-pointer"
+            onClick={() => handleProfileClick(tweet.author.username)}
+          >
+            {tweet.author.username}
+          </span>
         
       </p>
       <p>{tweet.title}</p>

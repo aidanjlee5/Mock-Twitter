@@ -17,7 +17,8 @@ const handleEditBio = async (id: string) => {
 
             const data = await response.json();
 
-            // Handle the response data here
+            // Handle the response data here, e.g., updating the UI or state
+            console.log('Bio updated successfully:', data);
         } catch (error) {
             console.error('Error:', error);
         }
