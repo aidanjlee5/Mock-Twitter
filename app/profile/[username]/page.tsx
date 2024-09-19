@@ -3,6 +3,7 @@ import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
 import { createServerActionClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from 'next/headers';
 import Tweets from "../../tweets";
+import { MouseEventHandler } from 'react';
 import AuthButtonServer from "./../../authButtonServer";
 
 interface UserProfile {
@@ -84,6 +85,7 @@ export default async function UserProfilePage({ params }: UserProfilePageProps) 
     })) ?? [];
 
   return (
+
     <div className="mx-auto flex justify-center min-h-screen">
     <div className="container p-4">
         <div className="flex items-center space-x-4">
@@ -91,9 +93,9 @@ export default async function UserProfilePage({ params }: UserProfilePageProps) 
             <div>
                 <h1 className="text-2xl font-bold">{profile.name}</h1>
                 <p className="text-gray-600">@{profile.username}</p>
-                {profile?.id && profile.id == session?.user.id && (
-                  <button onClick={editBio} className="p-2 bg-sky-400 ml-10 border hover:bg-sky-500 rounded-lg">Edit Bio</button>
-                )}
+                {/* {profile?.id && profile.id == session?.user.id && (
+                //   <button onClick={editBio as MouseEventHandler<HTMLButtonElement> | undefined} className="p-2 bg-sky-400 ml-10 border hover:bg-sky-500 rounded-lg">Edit Bio</button>
+                )} */}
                 <p className="mt-2">{profile.bio}</p>
             </div>
         </div>
